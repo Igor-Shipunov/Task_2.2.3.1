@@ -8,7 +8,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import web.model.User;
 
@@ -36,9 +38,11 @@ public class AppConfig {
 
     @Bean //change
     public LocalContainerEntityManagerFactoryBean getEntityManager() {
+        JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setDataSource(getDataSource());
         factoryBean.setPackagesToScan(env.getProperty("db.entity.package"));
+        factoryBean.setJpaVendorAdapter(vendorAdapter);
         //factoryBean.setJpaProperties(env.getProperty(hibernate.showSQL));
 
 

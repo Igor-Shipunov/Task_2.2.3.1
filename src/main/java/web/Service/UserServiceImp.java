@@ -1,13 +1,15 @@
 package web.Service;
 
+import org.springframework.transaction.annotation.Transactional;
 import web.dao.UserDaoImp;
 import web.model.User;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
-@Component
+//@Component
 @Service //хз на счет анотации
+@Transactional
 public class UserServiceImp implements UserService {
 
     private UserDaoImp userDao = new UserDaoImp();
