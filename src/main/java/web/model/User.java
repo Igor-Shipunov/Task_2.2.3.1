@@ -3,26 +3,25 @@ package web.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users_for_task_2.2.3.1")
+@Table(name = "users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    private int id;
 
     @Column
-    String name;
+    private String name;
 
     @Column
-    String lastName;
+    private String lastName;
 
     @Column
-    String number;
+    private String number;
 
     public User() {}
 
-    public User(int id, String name, String lastName, String number) {
-        this.id = id;
+    public User(String name, String lastName, String number) { //delete id in param
         this.name = name;
         this.lastName = lastName;
         this.number = number;

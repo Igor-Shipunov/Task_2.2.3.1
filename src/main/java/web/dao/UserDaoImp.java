@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public class UserDaoImp implements UserDao{
     @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     @Override
     public void create(User user) {
@@ -20,19 +20,25 @@ public class UserDaoImp implements UserDao{
     }
 
     @Override
-    public List<User> readAll(User user) {
+    public List<User> readAll() {
         return entityManager.createQuery("from User").getResultList();
     }
 
     @Override
     public void update(User user) {
-        entityManager.find(User.class, user);
-        //сеттеры
+        //entityManager.find(User.class, user);
+        entityManager.merge(user);
+        entityManager.flush();
     }
 
     @Override
     public void delete(User user) {
-        entityManager.remove(user);
+        entityManager.remove(entityManager.contains(user) ? user : entityManager.merge(user)); //mb by entity.find
         entityManager.flush();
+    }
+
+    @Override
+    public User readById(int id) {
+        return entityManager.find(User.class, id);
     }
 }

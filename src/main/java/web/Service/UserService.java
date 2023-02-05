@@ -8,9 +8,11 @@ public interface UserService {
 
     void create(User user);
 
-    List<User> readAll(User user);
+    List<User> readAll();
 
     void update(User user);
 
     void delete(User user);
+
+    User readById(int id);
 }

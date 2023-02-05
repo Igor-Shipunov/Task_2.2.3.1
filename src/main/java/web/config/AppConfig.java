@@ -6,14 +6,18 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import web.model.User;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
@@ -21,7 +25,7 @@ import java.util.Properties;
 @PropertySource("classpath:db.properties")
 @EnableTransactionManagement
 @ComponentScan(value = "web")
-
+//@EnableJpaRepositories("web")
 public class AppConfig {
     @Autowired
     private Environment env;
@@ -41,7 +45,7 @@ public class AppConfig {
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setDataSource(getDataSource());
-        factoryBean.setPackagesToScan(env.getProperty("db.entity.package"));
+        factoryBean.setPackagesToScan(env.getProperty("db.entity.package"));//?
         factoryBean.setJpaVendorAdapter(vendorAdapter);
         //factoryBean.setJpaProperties(env.getProperty(hibernate.showSQL));
 
@@ -51,15 +55,29 @@ public class AppConfig {
         props.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
         props.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
         factoryBean.setJpaProperties(props);
-        //factoryBean.(User.class);
+        //factoryBean.setBeanClassLoader(User.class.getClassLoader());
 
         return factoryBean;
     }
 
-    @Bean
+    /*@Bean
     public JpaTransactionManager getTransactionManager() {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         //transactionManager.setSessionFactory(getSessionFactory().getObject());
+        transactionManager.setEntityManagerFactory(getEntityManager().getObject());
+        return transactionManager;
+    }*/
+
+    /*@Bean
+    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(emf);
+        return transactionManager;
+    }*/
+
+    @Bean
+    public PlatformTransactionManager transactionManager() {
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(getEntityManager().getObject());
         return transactionManager;
     }

@@ -1,18 +1,16 @@
 package web.Controllers;
 
+import org.springframework.web.bind.annotation.*;
 import web.Service.UserService;
 import web.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.persistence.PersistenceContext;
 
 @Controller
-//@RequestMapping(value = "/user")
+@RequestMapping(value = "/user")
 public class UserController {
 
     //@Autowired
@@ -32,13 +30,37 @@ public class UserController {
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("newUser") User user) {
+    public String create(@ModelAttribute("user") User user) {
         userService.create(user);
-        return "redirect:/new";
+        return "redirect:/user/main";
     }
-    @GetMapping(value = "/test")
-    public String test() {
-        //model.addAttribute("user", new User());
-        return "test";
+    @GetMapping(value = "/main")
+    public String main(Model model) {
+        model.addAttribute("allUsers",userService.readAll());
+        return "main";
+    }
+
+    @GetMapping(value = "/{id}/edit")
+    public String edit(Model model, @PathVariable("id") int id) {
+        model.addAttribute("user", userService.readById(id));
+        return "/edit";
+    }
+
+    @PatchMapping(value = "/{id}")
+    public String update(@ModelAttribute("user") User user) {
+        userService.update(user);
+        return "redirect:/user/main";
+    }
+
+    /*@GetMapping(value = "/{id}/delete")
+    public String getForDelete(Model model, @PathVariable("id") int id) {
+        model.addAttribute("DeletedUser", userService.readById(id));
+        return "/";
+    }*/
+
+    @DeleteMapping("/{id}/delete")
+    public String delete(@PathVariable("id") int id) {
+        userService.delete(userService.readById(id));
+        return "redirect:/user/main";
     }
 }
