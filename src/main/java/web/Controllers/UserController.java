@@ -1,13 +1,10 @@
 package web.Controllers;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import web.Service.UserService;
 import web.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-
-import javax.persistence.PersistenceContext;
 
 @Controller
 @RequestMapping(value = "/user")
@@ -51,12 +48,6 @@ public class UserController {
         userService.update(user);
         return "redirect:/user/main";
     }
-
-    /*@GetMapping(value = "/{id}/delete")
-    public String getForDelete(Model model, @PathVariable("id") int id) {
-        model.addAttribute("DeletedUser", userService.readById(id));
-        return "/";
-    }*/
 
     @DeleteMapping("/{id}/delete")
     public String delete(@PathVariable("id") int id) {

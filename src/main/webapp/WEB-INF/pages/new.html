@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Creating new user</title>
 </head>
 <body>
-    <form th:method="POST", th:action="@{/user}" th:object="${user}">
-    <!--<form th:method="POST", th:object="${user}">-->
+    <form th:method="POST" th:action="@{/user}" th:object="${user}">
         <label for="name">Name: </label>
         <input type="text" th:field="*{name}" id="name"/>
         <label for="lastName">Last name: </label>
