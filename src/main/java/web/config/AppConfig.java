@@ -21,6 +21,7 @@ import java.util.Properties;
 @EnableTransactionManagement
 @ComponentScan(value = "web")
 public class AppConfig {
+
     @Autowired
     private Environment env;
 
@@ -34,12 +35,12 @@ public class AppConfig {
         return dataSource;
     }
 
-    @Bean //change
+    @Bean
     public LocalContainerEntityManagerFactoryBean getEntityManager() {
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setDataSource(getDataSource());
-        factoryBean.setPackagesToScan(env.getProperty("db.entity.package"));//?
+        factoryBean.setPackagesToScan(env.getProperty("db.entity.package"));
         factoryBean.setJpaVendorAdapter(vendorAdapter);
 
 

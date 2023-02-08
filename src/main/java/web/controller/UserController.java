@@ -1,18 +1,14 @@
-package web.Controllers;
+package web.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import web.Service.UserService;
+import web.service.UserService;
 import web.model.User;
 
 @Controller
 @RequestMapping(value = "/user")
 public class UserController {
-
-    //@Autowired
-    /*@PersistenceContext
-    UserService userService;*/
 
     private final UserService userService;
 
@@ -21,39 +17,37 @@ public class UserController {
     }
 
     @GetMapping(value = "/new")
-    public String newUser(Model model) {
+    public String addNewUser(Model model) {
         model.addAttribute("user", new User());
         return "new";
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("user") User user) {
-        userService.create(user);
+    public String createNewUser(@ModelAttribute("user") User user) {
+        userService.createNewUser(user);
         return "redirect:/user/main";
     }
     @GetMapping(value = "/main")
-    public String main(Model model) {
-        model.addAttribute("allUsers",userService.readAll());
+    public String mainPage(Model model) {
+        model.addAttribute("allUsers",userService.getAllUsers());
         return "main";
     }
 
     @GetMapping(value = "/{id}/edit")
-    public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("user", userService.readById(id));
+    public String editUser(Model model, @PathVariable("id") int id) {
+        model.addAttribute("user", userService.getUserById(id));
         return "/edit";
     }
 
     @PatchMapping(value = "/{id}")
-    @PostMapping(value = "/{id}")
-    public String update(@ModelAttribute("user") User user) {
-        userService.update(user);
+    public String updateUser(@ModelAttribute("user") User user) {
+        userService.updateUser(user);
         return "redirect:/user/main";
     }
 
-    //@DeleteMapping("/{id}/delete")
     @GetMapping("/{id}/delete")
-    public String delete(@PathVariable("id") int id) {
-        userService.delete(userService.readById(id));
+    public String deleteUser(@PathVariable("id") int id) {
+        userService.deleteUser(userService.getUserById(id));
         return "redirect:/user/main";
     }
 }

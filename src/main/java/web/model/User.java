@@ -21,7 +21,7 @@ public class User {
 
     public User() {}
 
-    public User(String name, String lastName, String number) { //delete id in param
+    public User(String name, String lastName, String number) {
         this.name = name;
         this.lastName = lastName;
         this.number = number;
